@@ -40,5 +40,8 @@ public class WebHttpApplication {
     private static void initializeRoutes(HttpRouter router) {
         router.get("/", req -> new Message("Hello, World!"));
         router.get("/message", req -> new Message("Hello, World!"));
+        router.post("/message", req -> new Message("Hello, World!"));
+
+        router.get("/routes", req -> router.getRoutes());
     }
 }

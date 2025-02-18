@@ -1,15 +1,14 @@
-// src/main/java/webhttp/RouterHandler.java
 package webhttp;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.module.SimpleModule;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.handler.codec.http.*;
 
 import java.util.Optional;
-import java.util.function.BiConsumer;
 import java.util.function.Function;
 
 public class HttpRouterHandler extends SimpleChannelInboundHandler<HttpObject> {
@@ -19,22 +18,49 @@ public class HttpRouterHandler extends SimpleChannelInboundHandler<HttpObject> {
 
     public HttpRouterHandler(HttpRouter httpRouter) {
         this.httpRouter = httpRouter;
+        SimpleModule module = new SimpleModule();
+        module.addSerializer(HttpMethod.class, new HttpMethodSerializer());
+        objectMapper.registerModule(module);
     }
 
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, HttpObject msg) throws Exception {
-        if (msg instanceof HttpRequest) {
-            HttpRequest req = (HttpRequest) msg;
-            String uri = req.uri();
+        if (!(msg instanceof HttpRequest)) {
+            return;
+        }
 
-            Optional<Function<HttpRequest, Object>> handler = httpRouter.getHandler(uri);
+        HttpRequest req = (HttpRequest) msg;
+        HttpMethod method = req.method();
+        String uri = req.uri();
 
-            if (handler.isPresent()) {
-                Object result = handler.get().apply(req);
-                sendResponse(ctx, req, result);
-            } else {
-                handleNotFound(ctx, req);
-            }
+        if (HttpMethod.GET.equals(method)) {
+            handleGetRequest(ctx, req, uri);
+        }
+
+        if (HttpMethod.POST.equals(method) && msg instanceof FullHttpRequest) {
+            handlePostRequest(ctx, req, uri);
+        }
+    }
+
+    private void handleGetRequest(ChannelHandlerContext ctx, HttpRequest req, String uri) throws JsonProcessingException {
+        Optional<Function<HttpRequest, Object>> handler = httpRouter.getHandler(uri);
+
+        if (handler.isPresent()) {
+            Object result = handler.get().apply(req);
+            sendResponse(ctx, req, result);
+        } else {
+            handleNotFound(ctx, req);
+        }
+    }
+
+    private void handlePostRequest(ChannelHandlerContext ctx, HttpRequest req, String uri) throws JsonProcessingException {
+        Optional<Function<HttpRequest, Object>> handler = httpRouter.postHandler(uri);
+
+        if (handler.isPresent()) {
+            Object result = handler.get().apply(req);
+            sendResponse(ctx, req, result);
+        } else {
+            handleNotFound(ctx, req);
         }
     }
 
