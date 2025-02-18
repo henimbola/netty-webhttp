@@ -34,7 +34,7 @@ public class WebHttpApplication {
                     .childHandler(new HttpServerInitializer(null, router));
 
             Channel ch = b.bind(PORT).sync().channel();
-            System.err.println("Open your web browser and navigate to localhost:" + PORT + '/');
+            System.out.println("Your server is available at http://localhost:" + PORT + '/');
             ch.closeFuture().sync();
         } finally {
             bossGroup.shutdownGracefully();
@@ -43,30 +43,7 @@ public class WebHttpApplication {
     }
 
     private static void initializeRoutes(HttpRouter router) {
-        router.addRoute("/", (ctx, req) -> {
-            String json;
-            try {
-                json = objectMapper.writeValueAsString(new Message("Hello World"));
-            } catch (JsonProcessingException e) {
-                throw new RuntimeException(e);
-            }
-            FullHttpResponse response = new DefaultFullHttpResponse(req.protocolVersion(), HttpResponseStatus.OK,
-                    Unpooled.wrappedBuffer(json.getBytes()));
-            response.headers().set(HttpHeaderNames.CONTENT_TYPE, HttpHeaderValues.APPLICATION_JSON);
-            response.headers().setInt(HttpHeaderNames.CONTENT_LENGTH, response.content().readableBytes());
-            ctx.writeAndFlush(response);
-        });
-    }
-
-    private static class Message {
-        private final String message;
-
-        public Message(String message) {
-            this.message = message;
-        }
-
-        public String getMessage() {
-            return message;
-        }
+        router.get("/", req -> new Message("Hello, World!"));
+        router.get("/message", req -> new Message("Hello, World!"));
     }
 }
