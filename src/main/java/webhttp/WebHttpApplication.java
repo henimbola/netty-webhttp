@@ -1,7 +1,6 @@
 // src/main/java/webhttp/WebHttpApplication.java
 package webhttp;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelOption;
