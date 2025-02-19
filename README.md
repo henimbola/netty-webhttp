@@ -22,3 +22,4 @@ I am inspired by the Laravel style of coding and that is how I want to create th
 - [ ] Security : Basic Auth
 - [ ] Security : JWT
 - [ ] Security : CORS
+- [ ] Endpoint registering
