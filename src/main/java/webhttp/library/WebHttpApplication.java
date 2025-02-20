@@ -1,4 +1,3 @@
-// src/main/java/webhttp/WebHttpApplication.java
 package webhttp.library;
 
 import io.netty.bootstrap.ServerBootstrap;

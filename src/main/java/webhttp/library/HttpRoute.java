@@ -8,8 +8,6 @@ import java.util.function.Function;
 public record HttpRoute(
         HttpMethod method,
         String path,
-        Function<HttpRequest, Object> handler,
-        String inputType,
-        String outputType
+        Function<HttpRequest, Object> handler
 ) {
 }

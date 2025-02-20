@@ -1,6 +1,5 @@
 package webhttp;
 
-import webhttp.library.HttpRouter;
 import webhttp.library.Router;
 import webhttp.library.WebHttpApplication;
 
@@ -14,7 +13,7 @@ public class Main {
 
         Router.post("/message", req -> new Message("Hello, World!"));
 
-        Router.get("/routes", req -> HttpRouter.getRoutes());
+        Router.get("/routes", req -> Router.getRoutes());
 
         Router.get("/testmap", req -> Map.of(
                 "message", "Hello, World!",

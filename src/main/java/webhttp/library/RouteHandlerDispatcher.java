@@ -11,12 +11,12 @@ import io.netty.handler.codec.http.*;
 import java.util.Optional;
 import java.util.function.Function;
 
-public class HttpRouterHandler extends SimpleChannelInboundHandler<HttpObject> {
+public class RouteHandlerDispatcher extends SimpleChannelInboundHandler<HttpObject> {
 
-    private final HttpRouter httpRouter;
+    private final Router httpRouter;
     private final ObjectMapper objectMapper = new ObjectMapper();
 
-    public HttpRouterHandler(HttpRouter httpRouter) {
+    public RouteHandlerDispatcher(Router httpRouter) {
         this.httpRouter = httpRouter;
         SimpleModule module = new SimpleModule();
         module.addSerializer(HttpMethod.class, new HttpMethodSerializer());
@@ -40,6 +40,19 @@ public class HttpRouterHandler extends SimpleChannelInboundHandler<HttpObject> {
         if (HttpMethod.POST.equals(method) && msg instanceof FullHttpRequest) {
             handlePostRequest(ctx, req, uri);
         }
+
+        // TODO : Add PUT, DELETE, PATCH
+        if (HttpMethod.PUT.equals(method) && msg instanceof FullHttpRequest) {
+            handlePutRequest(ctx, req, uri);
+        }
+
+        if (HttpMethod.DELETE.equals(method)) {
+            handleDeleteRequest(ctx, req, uri);
+        }
+
+        if (HttpMethod.PATCH.equals(method) && msg instanceof FullHttpRequest) {
+            handlePatchRequest(ctx, req, uri);
+        }
     }
 
     private void handleGetRequest(ChannelHandlerContext ctx, HttpRequest req, String uri) throws JsonProcessingException {
@@ -55,6 +68,40 @@ public class HttpRouterHandler extends SimpleChannelInboundHandler<HttpObject> {
 
     private void handlePostRequest(ChannelHandlerContext ctx, HttpRequest req, String uri) throws JsonProcessingException {
         Optional<Function<HttpRequest, Object>> handler = httpRouter.postHandler(uri);
+
+        if (handler.isPresent()) {
+            Object result = handler.get().apply(req);
+            sendResponse(ctx, req, result);
+        } else {
+            handleNotFound(ctx, req);
+        }
+    }
+
+
+    private void handlePutRequest(ChannelHandlerContext ctx, HttpRequest req, String uri) throws JsonProcessingException {
+        Optional<Function<HttpRequest, Object>> handler = httpRouter.putHandler(uri);
+
+        if (handler.isPresent()) {
+            Object result = handler.get().apply(req);
+            sendResponse(ctx, req, result);
+        } else {
+            handleNotFound(ctx, req);
+        }
+    }
+
+    private void handleDeleteRequest(ChannelHandlerContext ctx, HttpRequest req, String uri) throws JsonProcessingException {
+        Optional<Function<HttpRequest, Object>> handler = httpRouter.deleteHandler(uri);
+
+        if (handler.isPresent()) {
+            Object result = handler.get().apply(req);
+            sendResponse(ctx, req, result);
+        } else {
+            handleNotFound(ctx, req);
+        }
+    }
+
+    private void handlePatchRequest(ChannelHandlerContext ctx, HttpRequest req, String uri) throws JsonProcessingException {
+        Optional<Function<HttpRequest, Object>> handler = httpRouter.patchHandler(uri);
 
         if (handler.isPresent()) {
             Object result = handler.get().apply(req);
