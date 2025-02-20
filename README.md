@@ -7,8 +7,6 @@ This is a simple web server using Netty. It is a minimalistic implementation of 
 - [Features](#features)
 - [Installation](#installation)
 - [Usage](#usage)
-- [Contribution](#contribution)
-- [License](#license)
 
 ## Introduction
 
