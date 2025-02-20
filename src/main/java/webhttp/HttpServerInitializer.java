@@ -9,11 +9,9 @@ import io.netty.handler.ssl.SslContext;
 public class HttpServerInitializer extends ChannelInitializer<SocketChannel> {
 
     private final SslContext sslContext;
-    private final HttpRouter router;
 
-    public HttpServerInitializer(SslContext sslContext, HttpRouter router) {
+    public HttpServerInitializer(SslContext sslContext) {
         this.sslContext = sslContext;
-        this.router = router;
     }
 
     @Override
@@ -28,6 +26,6 @@ public class HttpServerInitializer extends ChannelInitializer<SocketChannel> {
         pipeline.addLast(new HttpContentCompressor());
         pipeline.addLast(new HttpServerExpectContinueHandler());
         pipeline.addLast(new HttpObjectAggregator(1048576));
-        pipeline.addLast(new HttpRouterHandler(router));
+        pipeline.addLast(new HttpRouterHandler(new HttpRouter()));
     }
 }
