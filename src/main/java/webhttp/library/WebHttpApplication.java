@@ -1,5 +1,5 @@
 // src/main/java/webhttp/WebHttpApplication.java
-package webhttp;
+package webhttp.library;
 
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.Channel;

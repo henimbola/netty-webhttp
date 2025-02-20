@@ -1,4 +1,4 @@
-package webhttp;
+package webhttp.library;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;

@@ -1,4 +1,4 @@
-package webhttp;
+package webhttp.library;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.SerializerProvider;
