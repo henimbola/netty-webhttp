@@ -118,3 +118,28 @@ public class Main {
     }
 }
 ```
+
+### Controller Based Routing
+
+Create a controller class:
+
+```java
+package webhttp.controller;
+
+public class MessageController extends Controller {
+    
+    public Object index() {
+        return new Message("Hello, World!");
+    }
+}
+```
+
+```java	
+public class Main {
+    public static void main(String[] args) throws Exception {
+        // Controller routes
+        Router.get("/messages", MessageController.class, "index");        
+        WebHttpApplication.run(8080);
+    }
+}
+```
