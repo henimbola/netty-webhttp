@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
+import java.lang.reflect.Method;
 
 public class Router {
     private static final List<HttpRoute> routes = new ArrayList<>();
@@ -68,5 +69,76 @@ public class Router {
 
     public static void patch(String path, Function<HttpRequest, Object> handler) {
         routes.add(new HttpRoute(HttpMethod.PATCH, path, handler));
+    }
+
+    public static void get(String path, Class<? extends Controller> controllerClass, String methodName) {
+        routes.add(new HttpRoute(HttpMethod.GET, path, request -> {
+            try {
+                Controller controller = controllerClass.getDeclaredConstructor().newInstance();
+                controller.setRequest(request);
+                Method method = controllerClass.getDeclaredMethod(methodName);
+                return method.invoke(controller);
+            } catch (Exception e) {
+                e.printStackTrace();
+                throw new RuntimeException("Failed to invoke controller method", e);
+            }
+        }));
+    }
+
+    // Similar methods for post, put, delete, patch
+    public static void post(String path, Class<? extends Controller> controllerClass, String methodName) {
+        routes.add(new HttpRoute(HttpMethod.POST, path, request -> {
+            try {
+                Controller controller = controllerClass.getDeclaredConstructor().newInstance();
+                controller.setRequest(request);
+                Method method = controllerClass.getDeclaredMethod(methodName);
+                return method.invoke(controller);
+            } catch (Exception e) {
+                e.printStackTrace();
+                throw new RuntimeException("Failed to invoke controller method", e);
+            }
+        }));
+    }
+
+    public static void put(String path, Class<? extends Controller> controllerClass, String methodName) {
+        routes.add(new HttpRoute(HttpMethod.PUT, path, request -> {
+            try {
+                Controller controller = controllerClass.getDeclaredConstructor().newInstance();
+                controller.setRequest(request);
+                Method method = controllerClass.getDeclaredMethod(methodName);
+                return method.invoke(controller);
+            } catch (Exception e) {
+                e.printStackTrace();
+                throw new RuntimeException("Failed to invoke controller method", e);
+            }
+        }));
+    }
+
+    public static void delete(String path, Class<? extends Controller> controllerClass, String methodName) {
+        routes.add(new HttpRoute(HttpMethod.DELETE, path, request -> {
+            try {
+                Controller controller = controllerClass.getDeclaredConstructor().newInstance();
+                controller.setRequest(request);
+                Method method = controllerClass.getDeclaredMethod(methodName);
+                return method.invoke(controller);
+            } catch (Exception e) {
+                e.printStackTrace();
+                throw new RuntimeException("Failed to invoke controller method", e);
+            }
+        }));
+    }
+
+    public static void patch(String path, Class<? extends Controller> controllerClass, String methodName) {
+        routes.add(new HttpRoute(HttpMethod.PATCH, path, request -> {
+            try {
+                Controller controller = controllerClass.getDeclaredConstructor().newInstance();
+                controller.setRequest(request);
+                Method method = controllerClass.getDeclaredMethod(methodName);
+                return method.invoke(controller);
+            } catch (Exception e) {
+                e.printStackTrace();
+                throw new RuntimeException("Failed to invoke controller method", e);
+            }
+        }));
     }
 }

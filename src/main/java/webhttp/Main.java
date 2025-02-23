@@ -20,6 +20,6 @@ public class Main {
                 "status", 200
         ));
 
-        WebHttpApplication.run(8080);
+        WebHttpApplication.run(9090);
     }
 }
