@@ -13,18 +13,72 @@ This is a simple web server using Netty. It is a minimalistic implementation of 
 Netty is an asynchronous event-driven network application framework for rapid development of maintainable high-performance protocol servers and clients. This project aims to simplify the process of creating web servers using Netty by providing a framework inspired by the Laravel style of coding.
 
 ## Features
-- [x] GET request
-- [x] POST request
-- [ ] Handle routes from a class that extends a superclass `Controller`
-- [ ] Handle routes from a class that has a method annotated with `@Route`
-- [ ] Handle URL parameters
-- [ ] Handle query parameters
-- [ ] Middlewares
-- [ ] Security: Session
-- [ ] Security: Basic Auth
-- [ ] Security: JWT
-- [ ] Security: CORS
-- [ ] Endpoint registering
+- HTTP Methods
+  - [x] GET request
+  - [x] POST request
+  - [x] PUT request
+  - [x] DELETE request
+  - [x] PATCH request
+
+- Routing
+  - [x] Lambda-based routing
+  - [x] Controller-based routing
+  - [ ] Route groups
+  - [ ] Route prefixes
+  - [ ] Route naming
+  - [ ] Resource routing
+
+- Request Handling
+  - [ ] URL parameters
+  - [ ] Query parameters
+  - [ ] Request body parsing
+  - [ ] File uploads
+  - [ ] Form data handling
+  - [ ] Request validation
+
+- Response
+  - [ ] JSON responses
+  - [ ] File responses
+  - [ ] Stream responses
+  - [ ] Custom response headers
+  - [ ] Response compression
+  - [ ] Content negotiation
+
+- Security
+  - [ ] CORS support
+  - [ ] Session management
+  - [ ] Basic authentication
+  - [ ] JWT authentication
+  - [ ] Rate limiting
+  - [ ] CSRF protection
+  - [ ] XSS protection
+
+- Middleware
+  - [ ] Global middleware
+  - [ ] Route middleware
+  - [ ] Middleware groups
+  - [ ] Error handling middleware
+
+- Database
+  - [ ] Database connection management
+  - [ ] Basic ORM functionality
+  - [ ] Query builder
+  - [ ] Migrations
+  - [ ] Model relationships
+
+- Caching
+  - [ ] In-memory cache
+  - [ ] File cache
+  - [ ] Redis integration
+  - [ ] Cache tags
+  - [ ] Cache invalidation
+
+- Development Tools
+  - [ ] Request logging
+  - [ ] Performance monitoring
+  - [ ] Hot reload
+  - [ ] Configuration management
+  - [ ] Environment management
 
 ## Installation
 
