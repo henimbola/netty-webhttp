@@ -1,5 +1,6 @@
 package webhttp;
 
+import webhttp.controllers.MessageController;
 import webhttp.library.Router;
 import webhttp.library.WebHttpApplication;
 
@@ -19,6 +20,8 @@ public class Main {
                 "message", "Hello, World!",
                 "status", 200
         ));
+
+        Router.get("/testmessageget", MessageController.class, "index");
 
         WebHttpApplication.run(9090);
     }
