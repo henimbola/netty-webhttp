@@ -31,13 +31,14 @@ Netty is an asynchronous event-driven network application framework for rapid de
 - Request Handling
   - [ ] URL parameters
   - [ ] Query parameters
-  - [ ] Request body parsing
+  - [x] Request body parsing
   - [ ] File uploads
   - [ ] Form data handling
   - [ ] Request validation
 
 - Response
-  - [ ] JSON responses
+  - [x] JSON responses
+  - [ ] Response Class
   - [ ] File responses
   - [ ] Stream responses
   - [ ] Custom response headers
