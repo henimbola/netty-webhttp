@@ -10,11 +10,11 @@ import io.netty.handler.logging.LoggingHandler;
 
 public class WebHttpApplication {
 
-    public static void run(int port) throws Exception {
-        EventLoopGroup bossGroup = new NioEventLoopGroup(1);
-        EventLoopGroup workerGroup = new NioEventLoopGroup();
-
-        try {
+    public static void run(int port) throws InterruptedException {
+        try (
+                EventLoopGroup bossGroup = new NioEventLoopGroup(1);
+                EventLoopGroup workerGroup = new NioEventLoopGroup();
+        ) {
             ServerBootstrap b = new ServerBootstrap();
             b.option(ChannelOption.SO_BACKLOG, 1024);
             b.group(bossGroup, workerGroup)
@@ -25,9 +25,6 @@ public class WebHttpApplication {
             Channel ch = b.bind(port).sync().channel();
             System.out.println("Your server is available at http://localhost:" + port + '/');
             ch.closeFuture().sync();
-        } finally {
-            bossGroup.shutdownGracefully();
-            workerGroup.shutdownGracefully();
         }
     }
 }
