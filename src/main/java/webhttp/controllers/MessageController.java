@@ -1,13 +1,11 @@
 package webhttp.controllers;
 
+import webhttp.Message;
 import webhttp.library.Controller;
-import java.util.Map;
+import webhttp.library.Response;
 
 public class MessageController extends Controller {
     public Object index() {
-        return Map.of(
-            "message", "List of posts",
-            "status", 200
-        );
+        return Response.ok(new Message("Hello, World!"));
     }
 }

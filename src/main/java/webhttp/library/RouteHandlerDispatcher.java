@@ -119,6 +119,18 @@ public class RouteHandlerDispatcher extends SimpleChannelInboundHandler<HttpObje
     }
 
     private <T> void sendResponse(ChannelHandlerContext ctx, HttpRequest req, T dto) throws JsonProcessingException {
+        if (dto instanceof Response) {
+            Response response = (Response) dto;
+            String responseJson;
+            responseJson = objectMapper.writeValueAsString(response.body());
+            FullHttpResponse httpResponse = new DefaultFullHttpResponse(req.protocolVersion(), HttpResponseStatus.valueOf(response.status()),
+                    Unpooled.wrappedBuffer(responseJson.getBytes()));
+            httpResponse.headers().set(HttpHeaderNames.CONTENT_TYPE, HttpHeaderValues.APPLICATION_JSON);
+            httpResponse.headers().setInt(HttpHeaderNames.CONTENT_LENGTH, httpResponse.content().readableBytes());
+            ctx.writeAndFlush(httpResponse);
+            return;
+        }
+
         String responseJson;
         responseJson = objectMapper.writeValueAsString(dto);
 
