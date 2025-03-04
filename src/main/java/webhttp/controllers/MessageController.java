@@ -8,4 +8,8 @@ public class MessageController extends Controller {
     public Object index() {
         return Response.ok(new Message("Hello, World!"));
     }
+
+    public Object store() {
+        return Response.created(new Message("Hello, World!"));
+    }
 }
